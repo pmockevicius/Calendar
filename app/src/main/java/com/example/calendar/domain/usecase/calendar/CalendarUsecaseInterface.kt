@@ -1,2 +1,5 @@
-package com.example.calendar.domain.usecase.calendar 
+package com.example.calendar.domain.usecase.calendar
 
+interface CalendarUsecaseInterface {
+
+}

@@ -1,4 +1,4 @@
 package com.example.calendar.data.calendar.local
 
-class CalendarLocalDataSource {
+class CalendarLocalDataSource: CharacterDatasourceInterface {
 }

@@ -1,4 +1,6 @@
 package com.example.calendar.data.repository.calendar
 
-class CalendarRepository {
+import com.example.calendar.domain.repository.CalendarRepositoryInterface
+
+class CalendarRepository: CalendarRepositoryInterface {
 }

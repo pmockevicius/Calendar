@@ -1,2 +1,5 @@
-package com.example.calendar.data.repository.calendar 
+package com.example.calendar.domain.repository
 
+interface CalendarRepositoryInterface {
+
+}
