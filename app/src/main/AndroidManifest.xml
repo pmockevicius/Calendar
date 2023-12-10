@@ -16,7 +16,7 @@
         android:theme="@style/Theme.Calendar"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.features.CalendarMainActivity"
+            android:name=".presentation.features.calendar.CalendarMainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

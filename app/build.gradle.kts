@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.calendar"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -53,6 +53,12 @@ dependencies {
 
     implementation("com.google.dagger:hilt-android:2.46")
     kapt("com.google.dagger:hilt-android-compiler:2.46")
+
+    implementation ("com.jakewharton.threetenabp:threetenabp:1.3.0")
+
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
+
+
 }
 
 kapt {
