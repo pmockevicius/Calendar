@@ -3,18 +3,23 @@ package com.example.calendar.presentation.features
 import CalendarAdapter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.calendar.R
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CalendarMainActivity : AppCompatActivity() {
+
+    private lateinit var viewModel: CalendarViewModelInterface
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        viewModel = ViewModelProvider(this)[CalendarViewModel::class.java]
 
         initAdapter()
-
+        
     }
 
     private fun initAdapter() {
