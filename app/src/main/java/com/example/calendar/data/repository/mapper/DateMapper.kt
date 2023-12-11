@@ -17,7 +17,6 @@ fun LocalDate.toEntity(): SelectedMonth =
                 month = this.monthValue,
                 year = this.year,
                 hasEvents = false,
-                isCurrentDay = this.isEqual(LocalDate.now())
             )
         }
     )

@@ -1,8 +1,10 @@
 package com.example.calendar.presentation.features.calendar
 
+import android.content.ContentValues.TAG
 import com.example.calendar.presentation.features.calendar.adapters.CalendarAdapter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
@@ -85,8 +87,17 @@ class CalendarMainActivity : AppCompatActivity() {
         recyclerView.layoutManager = layoutManager
 
         val days = emptyList<Day>()
-        daysOfMonthAdapter = CalendarAdapter(days)
+        daysOfMonthAdapter = CalendarAdapter(days, CalendarCallbacks())
         recyclerView.adapter = daysOfMonthAdapter
+
+    }
+
+    private inner class CalendarCallbacks : CalendarCallbackInterface {
+        override fun daySelected(day: Day) {
+            if (day.day != 0){
+                Log.d(TAG, "in activity: $day ")
+            }
+        }
 
     }
 

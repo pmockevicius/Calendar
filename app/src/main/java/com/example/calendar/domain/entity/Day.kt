@@ -5,5 +5,4 @@ data class Day(
     val month: Int = 0,
     val year: Int = 0,
     val hasEvents: Boolean = false,
-    val isCurrentDay: Boolean = false
 )
