@@ -1,6 +1,7 @@
 package com.example.calendar.presentation.features.calendar
 
 import androidx.lifecycle.ViewModel
+import com.example.calendar.domain.entity.Day
 import com.example.calendar.domain.usecase.calendar.CalendarUsecaseInterface
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,7 +11,7 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 data class uiState(
-    val days:  List<String> = emptyList(),
+    val days:  List<Day> = emptyList(),
     val monthYearText: String = ""
 )
 
@@ -30,10 +31,9 @@ class CalendarViewModel @Inject constructor(
         val currentDate = LocalDate.now()
         selectedMonth = currentDate.monthValue
         selectedYear = currentDate.year
-        val selectedDate = usecase.getDateBy(selectedYear, selectedMonth)
-        val firstWeekDayOfMonth = selectedDate.dayOfWeek.toString()
-        val daysOfMonth = generateDaysOfMonthList(selectedDate.lengthOfMonth(),firstWeekDayOfMonth)
-        updateUIState(daysOfMonth, "${selectedDate.month} ${selectedDate.year}")
+        val currentMonth = usecase.getDateBy(selectedYear, selectedMonth)
+        val daysOfMonth = generateDaysOfMonthList(currentMonth.daysOfTheMonth,currentMonth.firstWeekDayOfMonth)
+        updateUIState(daysOfMonth, "${currentMonth.monthName} ${currentMonth.year}")
     }
 
     override fun displayPreviousMonth() {
@@ -45,10 +45,9 @@ class CalendarViewModel @Inject constructor(
         }
 
         val previousMonth = usecase.getDateBy(selectedYear, selectedMonth)
-        val firstWeekDayOfMonth = previousMonth.dayOfWeek.toString()
-        val daysOfMonth = generateDaysOfMonthList(previousMonth.lengthOfMonth(),firstWeekDayOfMonth)
+        val daysOfMonth = generateDaysOfMonthList(previousMonth.daysOfTheMonth,previousMonth.firstWeekDayOfMonth)
 
-        updateUIState(daysOfMonth, "${previousMonth.month} ${previousMonth.year}")
+        updateUIState(daysOfMonth, "${previousMonth.monthName} ${previousMonth.year}")
     }
 
 
@@ -61,16 +60,14 @@ class CalendarViewModel @Inject constructor(
         }
 
         val nextMonth = usecase.getDateBy(selectedYear, selectedMonth)
-        val firstWeekDayOfMonth = nextMonth.dayOfWeek.toString()
-        val daysOfMonth = generateDaysOfMonthList(nextMonth.lengthOfMonth(),firstWeekDayOfMonth)
-        updateUIState(daysOfMonth, "${nextMonth.month} ${nextMonth.year}")
+        val daysOfMonth = generateDaysOfMonthList(nextMonth.daysOfTheMonth,nextMonth.firstWeekDayOfMonth)
+        updateUIState(daysOfMonth, "${nextMonth.monthName} ${nextMonth.year}")
     }
 
 
 
-
     private fun updateUIState(
-        days: List<String> = _uiState.value.days,
+        days: List<Day> = _uiState.value.days,
         monthYearText: String = _uiState.value.monthYearText,
     ) {
         _uiState.value = uiState(
@@ -79,8 +76,7 @@ class CalendarViewModel @Inject constructor(
         )
     }
 
-    private fun generateDaysOfMonthList(lengthOfMonth: Int, firstWeekDayOfMonth: String): List<String> {
-        val daysOfMonth = (1..lengthOfMonth).map { it.toString() }
+    private fun generateDaysOfMonthList(days: List<Day>, firstWeekDayOfMonth: String): List<Day> {
         val emptySpacesForDaysList = when (firstWeekDayOfMonth.lowercase()) {
             "monday" -> 1
             "tuesday" -> 2
@@ -91,8 +87,8 @@ class CalendarViewModel @Inject constructor(
             else -> 0
         }
 
-        val emptySpaces = List(emptySpacesForDaysList) { "" }
-        return emptySpaces + daysOfMonth
+        val emptySpaces = List(emptySpacesForDaysList) { Day() }
+        return emptySpaces + days
     }
 
 }

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.calendar.R
 import com.example.calendar.databinding.ActivityMainBinding
+import com.example.calendar.domain.entity.Day
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -83,7 +84,7 @@ class CalendarMainActivity : AppCompatActivity() {
         val layoutManager = GridLayoutManager(this, 7)
         recyclerView.layoutManager = layoutManager
 
-        val days = emptyList<String>()
+        val days = emptyList<Day>()
         daysOfMonthAdapter = CalendarAdapter(days)
         recyclerView.adapter = daysOfMonthAdapter
 

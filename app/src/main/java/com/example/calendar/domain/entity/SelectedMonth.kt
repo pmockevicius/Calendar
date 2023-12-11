@@ -5,5 +5,6 @@ data class SelectedMonth(
     val monthInNumber: Int = 0,
     val year: Int = 0,
     val firstWeekDayOfMonth: String = "",
-    val lengthOfMonth: Int = 0
+    val lengthOfMonth: Int = 0,
+    val daysOfTheMonth: List<Day>
 )

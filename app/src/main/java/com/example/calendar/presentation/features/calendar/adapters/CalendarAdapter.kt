@@ -6,13 +6,12 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.calendar.R
-
-
+import com.example.calendar.domain.entity.Day
 
 
 class CalendarAdapter(
-    private var days: List<String>
-): RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>() {
+    private var days: List<Day>
+) : RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>() {
 
     inner class CalendarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val dayTextView: TextView = view.findViewById(R.id.dayCellText)
@@ -30,10 +29,13 @@ class CalendarAdapter(
 
     override fun onBindViewHolder(holder: CalendarViewHolder, position: Int) {
         val day = days[position]
-        holder.dayTextView.text = day.toString()
+        val dayString = if (day.day == 0) "" else day.day.toString()
+
+        holder.dayTextView.text = dayString
     }
 
-    fun updateDaysOfTheMont(listOfDays: List<String>){
+
+    fun updateDaysOfTheMont(listOfDays: List<Day>) {
         days = listOfDays
         notifyDataSetChanged()
     }

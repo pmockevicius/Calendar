@@ -1,6 +1,6 @@
 package com.example.tasksapplication.di
 
-import com.example.calendar.domain.repository.CalendarRepositoryInterface
+import com.example.calendar.domain.repository.DateRepositoryInterface
 import com.example.calendar.domain.usecase.calendar.CalendarUsecase
 import com.example.calendar.domain.usecase.calendar.CalendarUsecaseInterface
 import dagger.Module
@@ -13,6 +13,6 @@ import dagger.hilt.components.SingletonComponent
 class UsecaseModel {
 
     @Provides
-    fun provideCalendarUsecase(repository: CalendarRepositoryInterface): CalendarUsecaseInterface =
+    fun provideCalendarUsecase(repository: DateRepositoryInterface): CalendarUsecaseInterface =
         CalendarUsecase(repository)
 }

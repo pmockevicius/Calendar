@@ -1,7 +1,7 @@
 package com.example.tasksapplication.di
 
-import com.example.calendar.data.calendar.local.CalendarDatasourceInterface
-import com.example.calendar.data.calendar.local.CalendarLocalDataSource
+import com.example.calendar.data.dataSource.date.local.DateLocalDataSourceInterface
+import com.example.calendar.data.dataSource.date.local.DateLocalLocalDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,6 +12,6 @@ import dagger.hilt.components.SingletonComponent
 class DataSourceModel {
 
     @Provides
-    fun provideCalendarLocalDataSource(): CalendarDatasourceInterface =
-        CalendarLocalDataSource()
+    fun provideCalendarLocalDataSource(): DateLocalDataSourceInterface =
+        DateLocalLocalDataSource()
 }
