@@ -8,6 +8,6 @@ class CalendarUsecase @Inject constructor (
     private val repository: CalendarRepositoryInterface): CalendarUsecaseInterface {
 
     override fun getDateBy(year: Int, month: Int): LocalDate {
-        return LocalDate.of(year, month, 1)
+        return repository.getDateBy(year, month)
     }
 }

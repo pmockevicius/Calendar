@@ -1,6 +1,8 @@
 package com.example.calendar.data.calendar.local
 
+import java.time.LocalDate
+
 interface CalendarDatasourceInterface {
 
-    fun test()
+    fun getDateBy(year: Int, month: Int): LocalDate
 }

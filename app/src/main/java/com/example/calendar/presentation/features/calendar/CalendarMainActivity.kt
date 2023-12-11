@@ -28,19 +28,18 @@ class CalendarMainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         viewModel = ViewModelProvider(this)[CalendarViewModel::class.java]
 
+
+
         initView()
-
-        viewModel.loadCurrentMonth()
-
     }
 
     private fun initView() {
         initAdapter()
         initObservers()
         initListeners()
+        viewModel.loadCurrentMonth()
     }
 
     private fun initListeners() {

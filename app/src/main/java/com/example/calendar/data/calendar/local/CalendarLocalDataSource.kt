@@ -1,11 +1,10 @@
 package com.example.calendar.data.calendar.local
 
-import android.content.ContentValues
-import android.util.Log
+import java.time.LocalDate
 
 class CalendarLocalDataSource: CalendarDatasourceInterface {
 
-    override fun test(){
-        Log.d(ContentValues.TAG, "test in datasource called: ")
+    override fun getDateBy(year: Int, month: Int): LocalDate {
+        return LocalDate.of(year, month, 1)
     }
 }

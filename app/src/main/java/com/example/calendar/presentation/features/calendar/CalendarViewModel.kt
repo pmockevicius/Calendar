@@ -15,7 +15,8 @@ data class uiState(
 )
 
 @HiltViewModel
-class CalendarViewModel @Inject constructor(private val usecase: CalendarUsecaseInterface) :
+class CalendarViewModel @Inject constructor(
+    private val usecase: CalendarUsecaseInterface) :
     CalendarViewModelInterface, ViewModel() {
 
     private val _uiState: MutableStateFlow<uiState> = MutableStateFlow(uiState())
