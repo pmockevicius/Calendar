@@ -9,9 +9,9 @@ import dagger.hilt.components.SingletonComponent
 
 @Module
 @InstallIn(SingletonComponent::class)
-class DataSourceModel {
+class DateLocalDataSourceModel {
 
     @Provides
-    fun provideCalendarLocalDataSource(): DateLocalDataSourceInterface =
+    fun provideDateLocalDataSource(): DateLocalDataSourceInterface =
         DateLocalLocalDataSource()
 }

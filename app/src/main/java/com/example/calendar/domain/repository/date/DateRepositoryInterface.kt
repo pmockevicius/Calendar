@@ -1,4 +1,4 @@
-package com.example.calendar.domain.repository
+package com.example.calendar.domain.repository.date
 
 import com.example.calendar.domain.entity.SelectedMonth
 
