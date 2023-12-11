@@ -3,6 +3,7 @@ package com.example.calendar.presentation.features.calendar
 import com.example.calendar.presentation.features.calendar.adapters.CalendarAdapter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -53,6 +54,7 @@ class CalendarMainActivity : AppCompatActivity() {
 
         binding.monthTextView.setOnClickListener(){
             viewModel.loadCurrentMonth()
+            Toast.makeText(this, "Displaying current date", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -60,9 +62,8 @@ class CalendarMainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.uiState.map { it.days }
-                    .distinctUntilChanged().collect { numberOfDaysInMonth ->
-                        val daysOfMonthList = (1..numberOfDaysInMonth).toList()
-                        daysOfMonthAdapter.updateDaysOfTheMont(daysOfMonthList)
+                    .distinctUntilChanged().collect {
+                        daysOfMonthAdapter.updateDaysOfTheMont(it)
                     }
             }
         }
@@ -83,7 +84,7 @@ class CalendarMainActivity : AppCompatActivity() {
         val layoutManager = GridLayoutManager(this, 7)
         recyclerView.layoutManager = layoutManager
 
-        val days = emptyList<Int>()
+        val days = emptyList<String>()
         daysOfMonthAdapter = CalendarAdapter(days)
         recyclerView.adapter = daysOfMonthAdapter
 

@@ -5,7 +5,5 @@ import java.time.LocalDate
 
 interface CalendarUsecaseInterface {
 
-    fun loadCurrentMonth() : LocalDate
-
-    fun getDateInformation(year: Int, month: Int): LocalDate
+    fun getDateBy(year: Int, month: Int): LocalDate
 }

@@ -11,7 +11,7 @@ import com.example.calendar.R
 
 
 class CalendarAdapter(
-    private var days: List<Int>
+    private var days: List<String>
 ): RecyclerView.Adapter<CalendarAdapter.CalendarViewHolder>() {
 
     inner class CalendarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -33,7 +33,7 @@ class CalendarAdapter(
         holder.dayTextView.text = day.toString()
     }
 
-    fun updateDaysOfTheMont(listOfDays: List<Int>){
+    fun updateDaysOfTheMont(listOfDays: List<String>){
         days = listOfDays
         notifyDataSetChanged()
     }
