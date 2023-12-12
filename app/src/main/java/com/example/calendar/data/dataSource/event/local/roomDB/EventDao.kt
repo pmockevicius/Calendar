@@ -23,7 +23,7 @@ interface EventDao {
 //    @Update
 //    fun updateTask(task: TaskDbo)
 //
-    
+
 //
 //    @Query("DELETE FROM tasks WHERE body = ''")
 //    fun removeTasksWithNoText()
