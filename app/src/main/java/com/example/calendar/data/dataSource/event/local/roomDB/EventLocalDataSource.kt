@@ -9,7 +9,7 @@ class EventLocalDataSource @Inject constructor(
         private val eventDao = database.eventDao()
 
     override fun insert(){
-        eventDao.insertTaskAndGetId(EventDbo(0,"Test", 23232323))
+        eventDao.addEvent(EventDbo(0,"Test", 23232323))
     }
 
 }

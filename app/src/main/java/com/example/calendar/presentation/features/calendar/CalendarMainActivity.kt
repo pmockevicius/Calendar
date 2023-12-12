@@ -1,6 +1,7 @@
 package com.example.calendar.presentation.features.calendar
 
 import android.content.ContentValues.TAG
+import android.content.Intent
 import com.example.calendar.presentation.features.calendar.adapters.CalendarAdapter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.calendar.R
 import com.example.calendar.databinding.ActivityMainBinding
 import com.example.calendar.domain.entity.Day
+import com.example.calendar.presentation.features.events.EventActivity
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
@@ -95,10 +97,18 @@ class CalendarMainActivity : AppCompatActivity() {
     private inner class CalendarCallbacks : CalendarCallbackInterface {
         override fun daySelected(day: Day) {
             if (day.day != 0){
-                Log.d(TAG, "in activity: $day ")
+                navigateToEventsActivity()
             }
         }
 
+    }
+
+
+    fun navigateToEventsActivity() {
+        val intent = Intent(
+            this, EventActivity::class.java
+        )
+        startActivity(intent)
     }
 
 }

@@ -10,7 +10,9 @@ data class EventDbo(
 
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
-    val body: String,
-    @ColumnInfo(name = "time_added") var timeAdded: Long,
+    val name: String = "",
+    val eventDate: String = "",
+    val dateAdded: Long,
+    val location: String = ""
 ) {
 }
