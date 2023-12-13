@@ -57,7 +57,6 @@ class CustomCalendarLayout @JvmOverloads constructor(
 
 // Improve this logic for current month setting events!!!!!
     fun setEvents(daysWithEvents: List<Int>) {
-
         eventDays = daysWithEvents
         if (::adapter.isInitialized) {
             updateEventsInAdapter()
@@ -84,6 +83,8 @@ class CustomCalendarLayout @JvmOverloads constructor(
 
         binding.monthTextView.setOnClickListener(){
             loadCurrentDate()
+            calendarClickListener?.onCurrentMonthClick(selectedYear, selectedMonth)
+
         }
     }
 
@@ -110,9 +111,6 @@ class CustomCalendarLayout @JvmOverloads constructor(
         val previousMonth = getMonthBy(selectedYear, selectedMonth)
         val daysOfMonth =
             generateDaysOfMonthList(previousMonth)
-
-//        val daysOfMontWithEvents = daysOfMonth.
-
 
         adapter.updateDaysOfTheMont(daysOfMonth)
             setMonthYearText(previousMonth.month.toString(), previousMonth.year)
@@ -200,7 +198,7 @@ class CustomCalendarLayout @JvmOverloads constructor(
             setBackgroundForToday(day, holder)
 
             holder.itemView.setOnClickListener {
-                calendarClickListener?.onDayClick(day.toString())
+                calendarClickListener?.onDayClick(day.year, day.month, day.day)
             }
 
         }
@@ -238,9 +236,10 @@ class CustomCalendarLayout @JvmOverloads constructor(
 
 
     interface CalendarClickListener {
-        fun onDayClick(selectedDay: String )
+        fun onDayClick(selectedYear: Int, selectedMonth: Int, selectedDay: Int )
         fun onPreviousMonthClick(previousYear: Int, previousMonth: Int )
         fun onNextMonthClick(nextYear: Int, nextMonth: Int )
+        fun onCurrentMonthClick(currentYear: Int, currentMonth: Int )
 
     }
 

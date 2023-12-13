@@ -29,9 +29,9 @@ class EventAdapter(
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
         val event = events[position]
         holder.eventName.setText(event.name)
-//        holder.taskTitle.setText(task.body)
-//        holder.taskTimeAdded.setText(convertMillisToFormattedDateTime(task.timeAdded))
-//        holder.completedCheckBox.isChecked = task.isCompleted
+        holder.eventLocation.setText(event.location)
+        holder.eventDateAdded.setText(convertMillisToFormattedDateTime(event.dateAdded))
+
 
 
 //        initListeners(holder, event)
@@ -104,6 +104,8 @@ class EventAdapter(
 
     inner class EventViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val eventName: EditText = view.findViewById(R.id.EventName)
+        val eventLocation: EditText = view.findViewById(R.id.EventLocation)
+        val eventDateAdded: EditText = view.findViewById(R.id.EventDateAdded)
 
     }
 

@@ -1,9 +1,7 @@
 package com.example.calendar.presentation.features.events
 
-import android.content.ContentValues.TAG
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -18,6 +16,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 
 
 @AndroidEntryPoint
@@ -41,23 +40,15 @@ class EventMainActivity : AppCompatActivity() {
     private fun initView() {
         customCalendarLayout = findViewById(R.id.myCalendar)
         viewModel.loadCurrentMonth()
-        customCalendarLayout.setEvents(listOf(2, 3, 4))
         initListeners()
         setUpTaskAdapter()
+        val currentDate = LocalDate.now()
+        setEventDayText(currentDate.year, currentDate.monthValue, currentDate.dayOfMonth)
 
-        addEvents()
-        eventAdapter.updateEvents(
-            listOf(
-                Event(
-                    name = "testName",
-                    eventDay = 15,
-                    eventMonth = 10,
-                    eventYear = 2023,
-                    dateAdded = System.currentTimeMillis(),
-                    location = "testLocation"
-                )
-            )
-        )
+
+//        addEvents()
+
+
     }
 
     private fun setUpTaskAdapter() {
@@ -70,12 +61,12 @@ class EventMainActivity : AppCompatActivity() {
     private fun addEvents() {
         viewModel.addEvent(
             Event(
-                name = "testName",
-                eventDay = 15,
-                eventMonth = 10,
-                eventYear = 2023,
+                name = "Lunch",
+                eventDay = 10,
+                eventMonth = 1,
+                eventYear = 2024,
                 dateAdded = System.currentTimeMillis(),
-                location = "testLocation"
+                location = "restaurant"
             )
         )
     }
@@ -91,13 +82,22 @@ class EventMainActivity : AppCompatActivity() {
             }
         }
 
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.map { it.events }
+                    .distinctUntilChanged().collect {
+                        eventAdapter.updateEvents(it)
+                    }
+            }
+        }
 
-
+        
 
         customCalendarLayout.setOnCalendarClickListener(object :
             CustomCalendarLayout.CalendarClickListener {
-            override fun onDayClick(selectedDay: String) {
-                Log.d(TAG, "onDayClicked: $selectedDay")
+            override fun onDayClick(selectedYear: Int, selectedMonth: Int, selectedDay: Int) {
+                setEventDayText(selectedYear, selectedMonth, selectedDay)
+               viewModel.getEventsFor(selectedYear, selectedMonth, selectedDay)
             }
 
             override fun onPreviousMonthClick(previousYear: Int, previousMonth: Int) {
@@ -107,7 +107,15 @@ class EventMainActivity : AppCompatActivity() {
             override fun onNextMonthClick(nextYear: Int, nextMonth: Int) {
                 viewModel.getDaysWithEvents(nextYear, nextMonth)
             }
+
+            override fun onCurrentMonthClick(currentYear: Int, currentMonth: Int) {
+                viewModel.getDaysWithEvents(currentYear, currentMonth)
+            }
         })
+    }
+
+    fun setEventDayText(year: Int, month: Int, day: Int){
+        binding.eventsDay.setText("Events for $day/$month/$year")
     }
 
 

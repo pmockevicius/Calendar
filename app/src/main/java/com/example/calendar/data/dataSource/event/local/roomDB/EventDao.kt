@@ -19,6 +19,9 @@ interface EventDao {
     @Query("SELECT * FROM events WHERE eventYear = :year AND eventMonth = :month")
     fun getEventsFor(year: Int, month: Int): List<EventDbo>
 
+    @Query("SELECT * FROM events WHERE eventYear = :year AND eventMonth = :month AND eventDay = :day")
+    fun getEventsFor(year: Int, month: Int, day: Int): List<EventDbo>
+
 
     @Delete
     fun DeleteEvent(event: EventDbo)

@@ -20,4 +20,8 @@ class EventUsecase @Inject constructor (
         return eventRepository.getEventsFor(year, month).map { it.eventDay }
     }
 
+    override suspend fun getEventsFor(year: Int, month: Int, day: Int): List<Event>{
+        return eventRepository.getEventsFor(year, month, day)
+    }
+
 }

@@ -15,4 +15,8 @@ class EventRepository @Inject constructor(private val localEventDS: EventLocalDa
     override fun getEventsFor(year: Int, month: Int): List<Event>{
         return localEventDS.getEventsFor(year, month).map { it.toEntity() }
     }
+
+    override suspend fun getEventsFor(year: Int, month: Int, day: Int): List<Event>{
+        return localEventDS.getEventsFor(year, month, day).map { it.toEntity() }
+    }
 }

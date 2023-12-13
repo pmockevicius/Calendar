@@ -15,41 +15,55 @@ import javax.inject.Inject
 
 data class UIState(
     val daysWithEvents: List<Int> = listOf(),
-    val somethingElse: Int = 0
+    val events: List<Event> = listOf()
 )
 
 @HiltViewModel
 class EventViewModel @Inject constructor(private val usecase: EventUsecaseInterface) :
-    MainActivityViewModelInterface, ViewModel() {
+    EventViewModelInterface, ViewModel() {
 
     private val _uiState: MutableStateFlow<UIState> = MutableStateFlow(UIState())
     override val uiState: StateFlow<UIState> = _uiState
 
-        override fun addEvent(event: Event){
-            viewModelScope.launch(Dispatchers.IO) {
-                usecase.addEvent(event)
-            }
+    override fun addEvent(event: Event) {
+        viewModelScope.launch(Dispatchers.IO) {
+            usecase.addEvent(event)
         }
+    }
+
+    override fun getEventsFor(year: Int, month: Int, day: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val events = usecase.getEventsFor(year, month, day)
+            _uiState.update { it.copy(events = events) }
+        }
+    }
 
     override fun getDaysWithEvents(year: Int, month: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-           val daysWithEvents =  usecase.getDaysWithEventsList(year, month)
+            val daysWithEvents = usecase.getDaysWithEventsList(year, month)
+
 
             _uiState.update { it.copy(daysWithEvents = daysWithEvents) }
 
         }
     }
 
-    override fun loadCurrentMonth(){
+    override fun loadCurrentMonth() {
         viewModelScope.launch(Dispatchers.IO) {
             val currentDate = LocalDate.now()
-            val daysWithEvents = usecase.getDaysWithEventsList(currentDate.year, currentDate.monthValue)
+            val daysWithEvents =
+                usecase.getDaysWithEventsList(currentDate.year, currentDate.monthValue)
+            val events = usecase.getEventsFor(
+                currentDate.year,
+                currentDate.monthValue,
+                currentDate.dayOfMonth
+            )
 
+            _uiState.update { it.copy(events = events) }
             _uiState.update { it.copy(daysWithEvents = daysWithEvents) }
         }
 
     }
-
 
 
 }

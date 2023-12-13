@@ -24,4 +24,8 @@ class EventLocalDataSource @Inject constructor(
         return result
     }
 
+    override suspend fun getEventsFor(year: Int, month: Int, day: Int): List<EventDbo>{
+        return eventDao.getEventsFor(year, month, day)
+    }
+
 }
