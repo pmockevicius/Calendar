@@ -4,8 +4,9 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface CalendarViewModelInterface {
 
-    fun loadCurrentMonth()
     val uiState: StateFlow<uiState>
+    fun loadCurrentMonth()
+
     fun displayPreviousMonth()
     fun displayNextMonth()
 }
