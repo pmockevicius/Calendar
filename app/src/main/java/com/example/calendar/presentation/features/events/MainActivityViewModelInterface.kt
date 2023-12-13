@@ -1,4 +1,4 @@
-package com.example.calendar.presentation.features.calendar
+package com.example.calendar.presentation.features.events
 
 import com.example.calendar.domain.entity.Event
 import kotlinx.coroutines.flow.StateFlow

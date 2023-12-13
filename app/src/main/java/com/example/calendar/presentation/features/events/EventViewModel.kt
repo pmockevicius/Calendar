@@ -1,4 +1,4 @@
-package com.example.calendar.presentation.features.calendar
+package com.example.calendar.presentation.features.events
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
