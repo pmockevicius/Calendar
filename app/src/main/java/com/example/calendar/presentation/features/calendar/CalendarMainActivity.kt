@@ -1,58 +1,58 @@
 package com.example.calendar.presentation.features.calendar
 
+import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.example.calendar.R
 import com.example.calendar.databinding.ActivityMainBinding
 import com.example.calendar.domain.entity.Day
 import com.example.calendar.presentation.features.events.EventActivity
-import com.example.circularimageview.components.CustomCalendarView
+import com.example.circularimageview.components.CustomCalendarLayout
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class CalendarMainActivity : AppCompatActivity() {
+class CalendarMainActivity : AppCompatActivity(), CustomCalendarLayout.OnDayClickListener {
 
     private lateinit var viewModel: CalendarViewModelInterface
 
-        private lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModel = ViewModelProvider(this)[CalendarViewModel::class.java]
 
-
-
         initView()
     }
 
     private fun initView() {
         initObservers()
-//        initListeners()
+        initListeners()
         viewModel.loadCurrentMonth()
+
     }
 
-//    private fun initListeners() {
-//        binding.monthNavigationPrevious.setOnClickListener(){
-//            viewModel.displayPreviousMonth()
-//        }
-//
-//        binding.monthNavigationNext.setOnClickListener(){
-//            viewModel.displayNextMonth()
-//        }
-//
-//        binding.monthTextView.setOnClickListener(){
-//            viewModel.loadCurrentMonth()
-//            Toast.makeText(this, "Displaying current date", Toast.LENGTH_SHORT).show()
-//        }
-//    }
+    private fun initListeners() {
+
+        val customCalendarLayout: CustomCalendarLayout = findViewById(R.id.myCalendar)
+
+        customCalendarLayout.setOnDayClickListener(object :
+            CustomCalendarLayout.OnDayClickListener {
+            override fun onDayClick(selectedDay: String) {
+                Log.d(TAG, "onDayClicked: $selectedDay")
+            }
+        })
+    }
 
     private fun initObservers() {
         lifecycleScope.launch {
@@ -88,7 +88,7 @@ class CalendarMainActivity : AppCompatActivity() {
 
     private inner class CalendarCallbacks : CalendarCallbackInterface {
         override fun daySelected(day: Day) {
-            if (day.day != 0){
+            if (day.day != 0) {
                 navigateToEventsActivity()
             }
         }
@@ -101,6 +101,11 @@ class CalendarMainActivity : AppCompatActivity() {
             this, EventActivity::class.java
         )
         startActivity(intent)
+    }
+
+    override fun onDayClick(selectedDay: String) {
+        Log.d(TAG, "onDayClick: $selectedDay ")
+        println("$selectedDay")
     }
 
 }

@@ -13,8 +13,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.calendar.R
+import com.example.calendar.databinding.CustomCalendarViewBinding
+import java.time.DayOfWeek
 import java.time.LocalDate
-
 
 data class CustomDay(
     val day: Int = 0,
@@ -23,11 +24,13 @@ data class CustomDay(
     val hasEvents: Boolean = false,
 )
 
-
-class CustomCalendarView @JvmOverloads constructor(
+class CustomCalendarLayout @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null
 ) : LinearLayout(context, attrs) {
+
+    private val binding: CustomCalendarViewBinding =
+        CustomCalendarViewBinding.inflate(LayoutInflater.from(context), this, true)
 
     private val recyclerView: RecyclerView
     private val adapter: CustomCalendarAdapter
@@ -37,7 +40,7 @@ class CustomCalendarView @JvmOverloads constructor(
     init {
         inflate(context, R.layout.custom_calendar_view, this)
 
-        recyclerView = findViewById(R.id.calendarRV)
+        recyclerView = binding.calendarRV
         val layoutManager = GridLayoutManager(context, 7)
         recyclerView.layoutManager = layoutManager
 
@@ -45,8 +48,23 @@ class CustomCalendarView @JvmOverloads constructor(
         recyclerView.adapter = adapter
 
         loadCurrentDate()
+        initListeners()
     }
 
+    private fun initListeners() {
+
+        binding.monthNavigationPrevious.setOnClickListener() {
+            displayPreviousMonth()
+        }
+
+        binding.monthNavigationNext.setOnClickListener() {
+            displayNextMonth()
+        }
+
+        binding.monthTextView.setOnClickListener(){
+            loadCurrentDate()
+        }
+    }
 
     private fun loadCurrentDate() {
         val currentDate = LocalDate.now()
@@ -55,25 +73,63 @@ class CustomCalendarView @JvmOverloads constructor(
         val currentMonth = LocalDate.of(selectedYear, selectedMonth, 1)
         val daysOfMonth = generateDaysOfMonthList(
             currentMonth,
-            currentMonth.dayOfWeek.toString()
         )
+        adapter.updateDaysOfTheMont(daysOfMonth)
+        setMonthYearText(currentMonth.month.toString(), currentMonth.year)
+
+    }
+
+    private fun displayPreviousMonth() {
+        if (selectedMonth > 1) {
+            selectedMonth--
+        } else {
+            selectedMonth = 12
+            selectedYear--
+        }
+        val previousMonth = getMonthBy(selectedYear, selectedMonth)
+        val daysOfMonth =
+            generateDaysOfMonthList(previousMonth)
 
         adapter.updateDaysOfTheMont(daysOfMonth)
+            setMonthYearText(previousMonth.month.toString(), previousMonth.year)
 
+    }
 
+    private fun displayNextMonth() {
+        if (selectedMonth < 12) {
+            selectedMonth++
+        } else {
+            selectedMonth = 1
+            selectedYear++
+        }
+
+        val nextMonth = getMonthBy(selectedYear, selectedMonth)
+        val daysOfMonth =
+            generateDaysOfMonthList(nextMonth)
+
+        adapter.updateDaysOfTheMont(daysOfMonth)
+            setMonthYearText(nextMonth.month.toString(), nextMonth.year)
+
+    }
+
+    private fun getMonthBy(year: Int, month: Int): LocalDate {
+        return LocalDate.of(year, month, 1)
+    }
+
+    private fun setMonthYearText(month: String, year: Int){
+     binding.monthTextView.text = "$month $year"
     }
 
     private fun generateDaysOfMonthList(
         selectedMonth: LocalDate,
-        firstWeekDayOfMonth: String
     ): List<CustomDay> {
-        val emptySpacesForDaysList = when (firstWeekDayOfMonth.lowercase()) {
-            "monday" -> 1
-            "tuesday" -> 2
-            "wednesday" -> 3
-            "thursday" -> 4
-            "friday" -> 5
-            "saturday" -> 6
+        val emptySpacesForDaysList = when (selectedMonth.dayOfWeek) {
+            DayOfWeek.MONDAY -> 1
+            DayOfWeek.TUESDAY -> 2
+            DayOfWeek.WEDNESDAY -> 3
+            DayOfWeek.THURSDAY -> 4
+            DayOfWeek.FRIDAY -> 5
+            DayOfWeek.SATURDAY -> 6
             else -> 0
         }
 
@@ -110,6 +166,10 @@ class CustomCalendarView @JvmOverloads constructor(
             holder.dayTextView.text = dayString
 
             setBackgroundForToday(day, holder)
+
+            holder.itemView.setOnClickListener {
+                onDayClickListener?.onDayClick(day.toString())
+            }
         }
 
         fun updateDaysOfTheMont(listOfDays: List<CustomDay>) {
@@ -117,15 +177,15 @@ class CustomCalendarView @JvmOverloads constructor(
             notifyDataSetChanged()
         }
 
-            private fun setBackgroundForToday(day: CustomDay, holder: CalendarViewHolder){
+        private fun setBackgroundForToday(day: CustomDay, holder: CalendarViewHolder) {
 
-        if (day.day > 0 && day.month > 0 && day.year > 0) {
-            val currentDate = LocalDate.now()
-            val todayDate = LocalDate.of(day.year, day.month, day.day)
-            val dayBackground = if(todayDate == currentDate) Color.RED else Color.TRANSPARENT
-            holder.dayTextView.setBackgroundColor(dayBackground)
+            if (day.day > 0 && day.month > 0 && day.year > 0) {
+                val currentDate = LocalDate.now()
+                val todayDate = LocalDate.of(day.year, day.month, day.day)
+                val dayBackground = if (todayDate == currentDate) Color.RED else Color.TRANSPARENT
+                holder.dayTextView.setBackgroundColor(dayBackground)
+            }
         }
-    }
 
         inner class CalendarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val dayTextView: TextView = view.findViewById(R.id.dayCellText)
@@ -135,15 +195,21 @@ class CustomCalendarView @JvmOverloads constructor(
                     val position = adapterPosition
                     if (position != RecyclerView.NO_POSITION) {
                         val clickedDay = days[position]
-
                     }
                 }
             }
         }
-
     }
 
 
+    interface OnDayClickListener {
+        fun onDayClick(selectedDay: String )
+    }
 
+    private var onDayClickListener: OnDayClickListener? = null
+
+    fun setOnDayClickListener(listener: OnDayClickListener) {
+        this.onDayClickListener = listener
+    }
 
 }
