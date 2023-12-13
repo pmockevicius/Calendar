@@ -21,7 +21,7 @@
             android:label="@string/title_activity_event"
             android:theme="@style/Theme.Calendar" />
         <activity
-            android:name=".presentation.features.calendar.CalendarMainActivity"
+            android:name=".presentation.features.calendar.EventMainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -33,9 +33,10 @@ class CustomCalendarLayout @JvmOverloads constructor(
         CustomCalendarViewBinding.inflate(LayoutInflater.from(context), this, true)
 
     private val recyclerView: RecyclerView
-    private val adapter: CustomCalendarAdapter
+    private lateinit var  adapter: CustomCalendarAdapter
     private var selectedMonth: Int = 0
     private var selectedYear: Int = 0
+    private var eventDays: List<Int> = listOf()
 
     init {
         inflate(context, R.layout.custom_calendar_view, this)
@@ -51,14 +52,34 @@ class CustomCalendarLayout @JvmOverloads constructor(
         initListeners()
     }
 
+
+
+
+// Improve this logic for current month setting events!!!!!
+    fun setEvents(daysWithEvents: List<Int>) {
+
+        eventDays = daysWithEvents
+        if (::adapter.isInitialized) {
+            updateEventsInAdapter()
+        }
+    }
+
+    private fun updateEventsInAdapter() {
+        val daysOfMonth = generateDaysOfMonthList(LocalDate.of(selectedYear, selectedMonth, 1))
+        adapter.updateDaysOfTheMont(daysOfMonth)
+    }
+
     private fun initListeners() {
 
         binding.monthNavigationPrevious.setOnClickListener() {
             displayPreviousMonth()
+            calendarClickListener?.onPreviousMonthClick(selectedYear, selectedMonth)
+
         }
 
         binding.monthNavigationNext.setOnClickListener() {
             displayNextMonth()
+            calendarClickListener?.onNextMonthClick(selectedYear, selectedMonth)
         }
 
         binding.monthTextView.setOnClickListener(){
@@ -89,6 +110,9 @@ class CustomCalendarLayout @JvmOverloads constructor(
         val previousMonth = getMonthBy(selectedYear, selectedMonth)
         val daysOfMonth =
             generateDaysOfMonthList(previousMonth)
+
+//        val daysOfMontWithEvents = daysOfMonth.
+
 
         adapter.updateDaysOfTheMont(daysOfMonth)
             setMonthYearText(previousMonth.month.toString(), previousMonth.year)
@@ -142,7 +166,11 @@ class CustomCalendarLayout @JvmOverloads constructor(
                 hasEvents = false,
             )
         }
-        return emptySpaces + daysOfMonth
+
+        val daysWithEvents = daysOfMonth.map { day ->
+            day.copy(hasEvents = eventDays.contains(day.day))
+        }
+        return emptySpaces + daysWithEvents
     }
 
     inner class CustomCalendarAdapter(
@@ -165,11 +193,16 @@ class CustomCalendarLayout @JvmOverloads constructor(
             val dayString = if (day.day == 0) "" else day.day.toString()
             holder.dayTextView.text = dayString
 
+            if (day.hasEvents){
+                holder.eventNotifier.visibility = View.VISIBLE
+            }
+
             setBackgroundForToday(day, holder)
 
             holder.itemView.setOnClickListener {
-                onDayClickListener?.onDayClick(day.toString())
+                calendarClickListener?.onDayClick(day.toString())
             }
+
         }
 
         fun updateDaysOfTheMont(listOfDays: List<CustomDay>) {
@@ -189,6 +222,8 @@ class CustomCalendarLayout @JvmOverloads constructor(
 
         inner class CalendarViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val dayTextView: TextView = view.findViewById(R.id.dayCellText)
+            val eventNotifier: TextView = view.findViewById(R.id.eventNotifier)
+
 
             init {
                 itemView.setOnClickListener {
@@ -202,14 +237,17 @@ class CustomCalendarLayout @JvmOverloads constructor(
     }
 
 
-    interface OnDayClickListener {
+    interface CalendarClickListener {
         fun onDayClick(selectedDay: String )
+        fun onPreviousMonthClick(previousYear: Int, previousMonth: Int )
+        fun onNextMonthClick(nextYear: Int, nextMonth: Int )
+
     }
 
-    private var onDayClickListener: OnDayClickListener? = null
+    private var calendarClickListener: CalendarClickListener? = null
 
-    fun setOnDayClickListener(listener: OnDayClickListener) {
-        this.onDayClickListener = listener
+    fun setOnCalendarClickListener(listener: CalendarClickListener) {
+        this.calendarClickListener = listener
     }
 
 }

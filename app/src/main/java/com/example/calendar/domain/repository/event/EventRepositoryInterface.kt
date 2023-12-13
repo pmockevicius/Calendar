@@ -1,6 +1,9 @@
 package com.example.calendar.domain.repository.event
 
-interface EventRepositoryInterface {
-fun insert()
+import com.example.calendar.domain.entity.Event
 
+interface EventRepositoryInterface {
+
+    fun addEvent(event: Event)
+    fun getEventsFor(year: Int, month: Int): List<Event>
 }

@@ -2,7 +2,7 @@ package com.example.calendar.di
 
 import android.content.Context
 import androidx.room.Room
-import com.sidharth.mosam.data.local.CalendarDataBase
+import com.sidharth.mosam.data.local.EventDataBase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,10 +15,10 @@ import javax.inject.Singleton
 class DatabaseModule {
     @Provides
     @Singleton
-    fun provideTaskDataBase(@ApplicationContext context: Context): CalendarDataBase {
+    fun provideTaskDataBase(@ApplicationContext context: Context): EventDataBase {
         return Room.databaseBuilder(
             context.applicationContext,
-            CalendarDataBase::class.java,
+            EventDataBase::class.java,
             "Calendar"
         ).build()
     }

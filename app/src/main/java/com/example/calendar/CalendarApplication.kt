@@ -1,15 +1,14 @@
 package com.example.calendar
 
 import android.app.Application
-import com.jakewharton.threetenabp.AndroidThreeTen
-import com.sidharth.mosam.data.local.CalendarDataBase
+import com.sidharth.mosam.data.local.EventDataBase
 import dagger.hilt.android.HiltAndroidApp
 
 
 @HiltAndroidApp
 class CalendarApplication : Application() {
 
-    val database: CalendarDataBase by lazy { CalendarDataBase.getDatabase(applicationContext) }
+    val database: EventDataBase by lazy { EventDataBase.getDatabase(applicationContext) }
 
 
 }

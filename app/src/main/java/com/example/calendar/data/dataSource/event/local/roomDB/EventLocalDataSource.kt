@@ -1,15 +1,27 @@
 package com.example.calendar.data.dataSource.event.local.roomDB
 
-import com.sidharth.mosam.data.local.CalendarDataBase
+import android.content.ContentValues.TAG
+import android.util.Log
+import com.example.calendar.domain.entity.Event
+import com.sidharth.mosam.data.local.EventDataBase
 import javax.inject.Inject
 
 class EventLocalDataSource @Inject constructor(
-    database: CalendarDataBase): EventLocalDatasourceInterface {
+    database: EventDataBase): EventLocalDatasourceInterface {
 
         private val eventDao = database.eventDao()
 
-    override fun insert(){
-//        eventDao.addEvent(EventDbo(0,"Test", 23232323))
+    override fun addEvent(event: EventDbo){
+     eventDao.addEvent(event)
+    }
+
+    override fun getEventsFor(year: Int, month: Int): List<EventDbo>{
+
+       val result = eventDao.getEventsFor(year, month)
+
+        Log.d(TAG, "getEvents in Datasource: $result")
+
+        return result
     }
 
 }

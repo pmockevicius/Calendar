@@ -9,19 +9,19 @@ import com.example.calendar.data.dataSource.event.local.roomDB.EventDbo
 
 
 @Database(entities = [EventDbo::class], version = 1, exportSchema = false)
-abstract class CalendarDataBase : RoomDatabase() {
+abstract class EventDataBase : RoomDatabase() {
 
     abstract fun eventDao(): EventDao
 
     companion object {
         @Volatile
-        private var INSTANCE: CalendarDataBase? = null
+        private var INSTANCE: EventDataBase? = null
 
-        fun getDatabase(context: Context): CalendarDataBase {
+        fun getDatabase(context: Context): EventDataBase {
             return INSTANCE ?: synchronized(this) {
                 val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    CalendarDataBase::class.java,
+                    EventDataBase::class.java,
                     "Events"
                 ).build()
                 INSTANCE = instance
