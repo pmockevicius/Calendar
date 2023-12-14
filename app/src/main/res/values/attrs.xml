@@ -1,18 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <!-- CustomButton -->
-    <declare-styleable name="CustomButtonView">
-        <attr name="customIsEnabled" format="boolean" />
-        <attr name="customText" format="string" />
-    </declare-styleable>
-    <attr name="customButtonStyle" format="reference" />
-
-
     <declare-styleable name="CustomCalendarLayout">
-        <attr name="customCalendarColor" format="color" />
+        <attr name="headerBackgroundColor" format="color" />
+        <attr name="headerTextColor" format="color" />
     </declare-styleable>
-
 </resources>
 
 

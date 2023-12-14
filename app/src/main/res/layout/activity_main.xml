@@ -15,7 +15,11 @@
     <com.example.circularimageview.components.CustomCalendarLayout
         android:id="@+id/myCalendar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        app:headerBackgroundColor="@color/blue"
+        app:headerTextColor="@color/white"
+        >
+
     </com.example.circularimageview.components.CustomCalendarLayout>
 
     <TextView

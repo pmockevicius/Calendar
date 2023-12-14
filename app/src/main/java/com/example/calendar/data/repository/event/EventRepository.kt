@@ -1,5 +1,6 @@
 package com.example.calendar.data.repository.event
 
+import com.example.calendar.data.dataSource.event.local.roomDB.EventDbo
 import com.example.calendar.data.dataSource.event.local.roomDB.EventLocalDatasourceInterface
 import com.example.calendar.data.repository.mapper.toDBO
 import com.example.calendar.data.repository.mapper.toEntity
@@ -14,6 +15,10 @@ class EventRepository @Inject constructor(private val localEventDS: EventLocalDa
 
     override suspend fun getEventsFor(year: Int, month: Int, day: Int?): List<Event>{
         return localEventDS.getEventsFor(year, month, day).map { it.toEntity() }
+    }
+
+    override suspend fun getEvents(): List<Event>{
+        return localEventDS.getEvents().map { it.toEntity() }
     }
 
 }

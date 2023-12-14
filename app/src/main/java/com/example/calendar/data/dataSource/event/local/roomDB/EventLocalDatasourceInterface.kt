@@ -6,4 +6,5 @@ interface EventLocalDatasourceInterface {
 
     fun addEvent(eventDbo: EventDbo)
     suspend fun getEventsFor(year: Int, month: Int, day: Int?): List<EventDbo>
+    suspend fun getEvents(): List<EventDbo>
 }

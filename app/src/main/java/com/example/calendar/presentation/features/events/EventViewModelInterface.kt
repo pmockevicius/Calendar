@@ -8,8 +8,5 @@ interface EventViewModelInterface {
     val uiState: StateFlow<UIState>
     fun addEvent(event: Event)
 
-    fun getDaysWithEventsFor(year: Int, month:Int)
-
-    fun loadCurrentMonth()
-    fun getEventsFor(year: Int, month: Int, day: Int)
+    fun getEvents()
 }

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.calendar.R
 import com.example.calendar.databinding.ActivityMainBinding
 import com.example.calendar.domain.entity.Event
+import com.example.circularimageview.components.CustomCalendarDay
 import com.example.circularimageview.components.CustomCalendarLayout
 import com.example.rickmorty.presentation.features.details.EventAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,15 +40,13 @@ class EventMainActivity : AppCompatActivity() {
 
     private fun initView() {
         customCalendarLayout = findViewById(R.id.myCalendar)
-        viewModel.loadCurrentMonth()
+        viewModel.getEvents()
         initListeners()
         setUpTaskAdapter()
         val currentDate = LocalDate.now()
         setEventDayText(currentDate.year, currentDate.monthValue, currentDate.dayOfMonth)
 
-
 //        addEvents()
-
 
     }
 
@@ -62,8 +61,8 @@ class EventMainActivity : AppCompatActivity() {
         viewModel.addEvent(
             Event(
                 name = "Test event",
-                eventDay = 15,
-                eventMonth = 1,
+                eventDay = 3,
+                eventMonth = 2,
                 eventYear = 2024,
                 eventTime = "19:45pm",
                 dateAdded = System.currentTimeMillis(),
@@ -76,41 +75,30 @@ class EventMainActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.map { it.daysWithEvents }
+                viewModel.uiState.map { it.events }
                     .distinctUntilChanged().collect {
                         customCalendarLayout.setEvents(it)
                     }
             }
         }
 
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.map { it.events }
-                    .distinctUntilChanged().collect {
-                        eventAdapter.updateEvents(it)
-                    }
-            }
-        }
-
-        
 
         customCalendarLayout.setOnCalendarClickListener(object :
             CustomCalendarLayout.CalendarClickListener {
-            override fun onDayClick(selectedYear: Int, selectedMonth: Int, selectedDay: Int) {
-                setEventDayText(selectedYear, selectedMonth, selectedDay)
-               viewModel.getEventsFor(selectedYear, selectedMonth, selectedDay)
+            override fun onDayClick(customCalendarDay: CustomCalendarDay) {
+
+                setEventDayText(customCalendarDay.year, customCalendarDay.month, customCalendarDay.day)
+
+               eventAdapter.updateEvents(customCalendarDay.events)
             }
 
             override fun onPreviousMonthClick(previousYear: Int, previousMonth: Int) {
-                viewModel.getDaysWithEventsFor(previousYear, previousMonth)
             }
 
             override fun onNextMonthClick(nextYear: Int, nextMonth: Int) {
-                viewModel.getDaysWithEventsFor(nextYear, nextMonth)
             }
 
             override fun onCurrentMonthClick(currentYear: Int, currentMonth: Int) {
-                viewModel.getDaysWithEventsFor(currentYear, currentMonth)
             }
         })
     }
