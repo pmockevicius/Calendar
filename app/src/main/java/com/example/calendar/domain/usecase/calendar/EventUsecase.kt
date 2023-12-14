@@ -12,15 +12,11 @@ class EventUsecase @Inject constructor (
         eventRepository.addEvent(event)
     }
 
-    override fun getEventsFor(year: Int, month: Int): List<Event>{
-        return eventRepository.getEventsFor(year, month)
+    override suspend fun getDaysWithEventsList(year: Int, month: Int): List<Int>{
+        return eventRepository.getEventsFor(year, month, null).map { it.eventDay }
     }
 
-    override fun getDaysWithEventsList(year: Int, month: Int): List<Int>{
-        return eventRepository.getEventsFor(year, month).map { it.eventDay }
-    }
-
-    override suspend fun getEventsFor(year: Int, month: Int, day: Int): List<Event>{
+    override suspend fun getEventsFor(year: Int, month: Int, day: Int?): List<Event>{
         return eventRepository.getEventsFor(year, month, day)
     }
 

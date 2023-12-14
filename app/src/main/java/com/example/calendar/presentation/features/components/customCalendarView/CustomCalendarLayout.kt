@@ -17,7 +17,7 @@ import com.example.calendar.databinding.CustomCalendarViewBinding
 import java.time.DayOfWeek
 import java.time.LocalDate
 
-data class CustomDay(
+data class CustomCalendarDay(
     val day: Int = 0,
     val month: Int = 0,
     val year: Int = 0,
@@ -33,7 +33,7 @@ class CustomCalendarLayout @JvmOverloads constructor(
         CustomCalendarViewBinding.inflate(LayoutInflater.from(context), this, true)
 
     private val recyclerView: RecyclerView
-    private lateinit var  adapter: CustomCalendarAdapter
+    private lateinit var adapter: CustomCalendarAdapter
     private var selectedMonth: Int = 0
     private var selectedYear: Int = 0
     private var eventDays: List<Int> = listOf()
@@ -53,12 +53,9 @@ class CustomCalendarLayout @JvmOverloads constructor(
     }
 
 
-
-
-// Improve this logic for current month setting events!!!!!
     fun setEvents(daysWithEvents: List<Int>) {
         eventDays = daysWithEvents
-        if (::adapter.isInitialized) {
+        adapter?.let {
             updateEventsInAdapter()
         }
     }
@@ -81,7 +78,7 @@ class CustomCalendarLayout @JvmOverloads constructor(
             calendarClickListener?.onNextMonthClick(selectedYear, selectedMonth)
         }
 
-        binding.monthTextView.setOnClickListener(){
+        binding.monthTextView.setOnClickListener() {
             loadCurrentDate()
             calendarClickListener?.onCurrentMonthClick(selectedYear, selectedMonth)
 
@@ -113,7 +110,7 @@ class CustomCalendarLayout @JvmOverloads constructor(
             generateDaysOfMonthList(previousMonth)
 
         adapter.updateDaysOfTheMont(daysOfMonth)
-            setMonthYearText(previousMonth.month.toString(), previousMonth.year)
+        setMonthYearText(previousMonth.month.toString(), previousMonth.year)
 
     }
 
@@ -130,7 +127,7 @@ class CustomCalendarLayout @JvmOverloads constructor(
             generateDaysOfMonthList(nextMonth)
 
         adapter.updateDaysOfTheMont(daysOfMonth)
-            setMonthYearText(nextMonth.month.toString(), nextMonth.year)
+        setMonthYearText(nextMonth.month.toString(), nextMonth.year)
 
     }
 
@@ -138,13 +135,13 @@ class CustomCalendarLayout @JvmOverloads constructor(
         return LocalDate.of(year, month, 1)
     }
 
-    private fun setMonthYearText(month: String, year: Int){
-     binding.monthTextView.text = "$month $year"
+    private fun setMonthYearText(month: String, year: Int) {
+        binding.monthTextView.text = "$month $year"
     }
 
     private fun generateDaysOfMonthList(
         selectedMonth: LocalDate,
-    ): List<CustomDay> {
+    ): List<CustomCalendarDay> {
         val emptySpacesForDaysList = when (selectedMonth.dayOfWeek) {
             DayOfWeek.MONDAY -> 1
             DayOfWeek.TUESDAY -> 2
@@ -155,9 +152,9 @@ class CustomCalendarLayout @JvmOverloads constructor(
             else -> 0
         }
 
-        val emptySpaces = List(emptySpacesForDaysList) { CustomDay() }
+        val emptySpaces = List(emptySpacesForDaysList) { CustomCalendarDay() }
         val daysOfMonth = (1..selectedMonth.lengthOfMonth()).map { day ->
-            CustomDay(
+            CustomCalendarDay(
                 day = day,
                 month = selectedMonth.monthValue,
                 year = selectedMonth.year,
@@ -172,7 +169,7 @@ class CustomCalendarLayout @JvmOverloads constructor(
     }
 
     inner class CustomCalendarAdapter(
-        private var days: List<CustomDay>,
+        private var days: List<CustomCalendarDay>,
     ) : RecyclerView.Adapter<CustomCalendarAdapter.CalendarViewHolder>() {
 
 
@@ -191,7 +188,7 @@ class CustomCalendarLayout @JvmOverloads constructor(
             val dayString = if (day.day == 0) "" else day.day.toString()
             holder.dayTextView.text = dayString
 
-            if (day.hasEvents){
+            if (day.hasEvents) {
                 holder.eventNotifier.visibility = View.VISIBLE
             }
 
@@ -203,12 +200,12 @@ class CustomCalendarLayout @JvmOverloads constructor(
 
         }
 
-        fun updateDaysOfTheMont(listOfDays: List<CustomDay>) {
+        fun updateDaysOfTheMont(listOfDays: List<CustomCalendarDay>) {
             days = listOfDays
             notifyDataSetChanged()
         }
 
-        private fun setBackgroundForToday(day: CustomDay, holder: CalendarViewHolder) {
+        private fun setBackgroundForToday(day: CustomCalendarDay, holder: CalendarViewHolder) {
 
             if (day.day > 0 && day.month > 0 && day.year > 0) {
                 val currentDate = LocalDate.now()
@@ -236,10 +233,10 @@ class CustomCalendarLayout @JvmOverloads constructor(
 
 
     interface CalendarClickListener {
-        fun onDayClick(selectedYear: Int, selectedMonth: Int, selectedDay: Int )
-        fun onPreviousMonthClick(previousYear: Int, previousMonth: Int )
-        fun onNextMonthClick(nextYear: Int, nextMonth: Int )
-        fun onCurrentMonthClick(currentYear: Int, currentMonth: Int )
+        fun onDayClick(selectedYear: Int, selectedMonth: Int, selectedDay: Int)
+        fun onPreviousMonthClick(previousYear: Int, previousMonth: Int)
+        fun onNextMonthClick(nextYear: Int, nextMonth: Int)
+        fun onCurrentMonthClick(currentYear: Int, currentMonth: Int)
 
     }
 

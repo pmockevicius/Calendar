@@ -38,10 +38,9 @@ class EventViewModel @Inject constructor(private val usecase: EventUsecaseInterf
         }
     }
 
-    override fun getDaysWithEvents(year: Int, month: Int) {
+    override fun getDaysWithEventsFor(year: Int, month: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             val daysWithEvents = usecase.getDaysWithEventsList(year, month)
-
 
             _uiState.update { it.copy(daysWithEvents = daysWithEvents) }
 

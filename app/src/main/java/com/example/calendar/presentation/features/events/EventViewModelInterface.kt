@@ -5,10 +5,11 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface EventViewModelInterface {
 
+    val uiState: StateFlow<UIState>
     fun addEvent(event: Event)
 
-    fun getDaysWithEvents(year: Int, month:Int)
-    val uiState: StateFlow<UIState>
+    fun getDaysWithEventsFor(year: Int, month:Int)
+
     fun loadCurrentMonth()
     fun getEventsFor(year: Int, month: Int, day: Int)
 }

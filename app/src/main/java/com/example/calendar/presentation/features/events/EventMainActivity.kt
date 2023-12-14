@@ -102,15 +102,15 @@ class EventMainActivity : AppCompatActivity() {
             }
 
             override fun onPreviousMonthClick(previousYear: Int, previousMonth: Int) {
-                viewModel.getDaysWithEvents(previousYear, previousMonth)
+                viewModel.getDaysWithEventsFor(previousYear, previousMonth)
             }
 
             override fun onNextMonthClick(nextYear: Int, nextMonth: Int) {
-                viewModel.getDaysWithEvents(nextYear, nextMonth)
+                viewModel.getDaysWithEventsFor(nextYear, nextMonth)
             }
 
             override fun onCurrentMonthClick(currentYear: Int, currentMonth: Int) {
-                viewModel.getDaysWithEvents(currentYear, currentMonth)
+                viewModel.getDaysWithEventsFor(currentYear, currentMonth)
             }
         })
     }
