@@ -42,7 +42,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Event Name"
+            android:text="Event"
             android:layout_weight="1"
             android:gravity="center"
             android:textSize="20sp"
@@ -52,7 +52,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Event Location"
+            android:text="Location"
             android:layout_weight="1"
             android:gravity="center"
             android:textSize="20sp"
@@ -62,7 +62,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Date added"
+            android:text="Time"
             android:layout_weight="1"
             android:gravity="center"
             android:textSize="20sp"

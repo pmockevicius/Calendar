@@ -11,6 +11,7 @@ fun Event.toDBO(): EventDbo =
         eventDay = this.eventDay,
         eventMonth = this.eventMonth,
         eventYear = this.eventYear,
+        eventTime = this.eventTime,
         dateAdded = this.dateAdded,
         location = this.location
     )
@@ -21,6 +22,7 @@ fun EventDbo.toEntity(): Event =
         eventDay = this.eventDay,
         eventMonth = this.eventMonth,
         eventYear = this.eventYear,
+        eventTime = this.eventTime,
         dateAdded = this.dateAdded,
         location = this.location
     )

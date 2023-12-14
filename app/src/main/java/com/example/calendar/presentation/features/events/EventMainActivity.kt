@@ -61,10 +61,11 @@ class EventMainActivity : AppCompatActivity() {
     private fun addEvents() {
         viewModel.addEvent(
             Event(
-                name = "Lunch",
-                eventDay = 10,
+                name = "Test event",
+                eventDay = 15,
                 eventMonth = 1,
                 eventYear = 2024,
+                eventTime = "19:45pm",
                 dateAdded = System.currentTimeMillis(),
                 location = "restaurant"
             )

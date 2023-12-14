@@ -22,17 +22,13 @@ interface EventDao {
     @Query("SELECT * FROM events WHERE eventYear = :year AND eventMonth = :month AND eventDay = :day")
     fun getEventsFor(year: Int, month: Int, day: Int): List<EventDbo>
 
+//    @Query("SELECT * FROM events WHERE eventYear = :year AND eventMonth = :month AND (:day IS NULL OR eventDay = :day)")
+//    fun getEventsFor(year: Int, month: Int, day: Int? = null): List<EventDbo>
+
+
 
     @Delete
     fun DeleteEvent(event: EventDbo)
 
-
-//    @Update
-//    fun updateTask(task: TaskDbo)
-//
-
-//
-//    @Query("DELETE FROM tasks WHERE body = ''")
-//    fun removeTasksWithNoText()
 
 }

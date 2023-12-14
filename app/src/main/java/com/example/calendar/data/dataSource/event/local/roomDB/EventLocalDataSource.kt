@@ -16,12 +16,8 @@ class EventLocalDataSource @Inject constructor(
     }
 
     override fun getEventsFor(year: Int, month: Int): List<EventDbo>{
+       return  eventDao.getEventsFor(year, month)
 
-       val result = eventDao.getEventsFor(year, month)
-
-        Log.d(TAG, "getEvents in Datasource: $result")
-
-        return result
     }
 
     override suspend fun getEventsFor(year: Int, month: Int, day: Int): List<EventDbo>{
