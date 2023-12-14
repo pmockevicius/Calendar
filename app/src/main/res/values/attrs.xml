@@ -3,6 +3,8 @@
     <declare-styleable name="CustomCalendarLayout">
         <attr name="headerBackgroundColor" format="color" />
         <attr name="headerTextColor" format="color" />
+        
+
     </declare-styleable>
 </resources>
 
