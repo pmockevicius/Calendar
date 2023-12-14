@@ -3,8 +3,10 @@
     <declare-styleable name="CustomCalendarLayout">
         <attr name="headerBackgroundColor" format="color" />
         <attr name="headerTextColor" format="color" />
-        
-
+        <attr name="calendarBackgroundColor" format="color" />
+        <attr name="firstWeekDaySun" format="boolean" />
+        <attr name="selectedDayTextColor" format="color" />
+        <attr name="currentDayBackgroundColor" format="color" />
     </declare-styleable>
 </resources>
 

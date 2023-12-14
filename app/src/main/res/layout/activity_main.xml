@@ -17,7 +17,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:headerBackgroundColor="@color/blue"
-        app:headerTextColor="@color/white"
+        app:headerTextColor="#40B027"
+        app:calendarBackgroundColor="#D2AEE6"
+        app:firstWeekDaySun="true"
+        app:selectedDayTextColor="#FF5722"
+        app:currentDayBackgroundColor="#5D8F31"
         >
 
     </com.example.circularimageview.components.CustomCalendarLayout>
