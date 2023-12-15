@@ -9,6 +9,4 @@ import dagger.hilt.android.HiltAndroidApp
 class CalendarApplication : Application() {
 
     val database: EventDataBase by lazy { EventDataBase.getDatabase(applicationContext) }
-
-
 }

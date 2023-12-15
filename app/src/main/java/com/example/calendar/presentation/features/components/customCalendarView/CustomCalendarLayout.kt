@@ -2,6 +2,7 @@ package com.example.circularimageview.components
 
 import android.content.Context
 import android.content.res.ColorStateList
+import android.content.res.TypedArray
 import android.graphics.Color
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -18,11 +19,11 @@ import com.example.calendar.domain.entity.Event
 import java.time.DayOfWeek
 import java.time.LocalDate
 
-data class CustomCalendarDay(
+data class CustomCalendarDayWithEvents(
     val day: Int = 0,
     val month: Int = 0,
     val year: Int = 0,
-    val events: List<Event> = listOf(),
+    val events: List<Any> = listOf(),
 )
 
 class CustomCalendarLayout @JvmOverloads constructor(
@@ -38,9 +39,9 @@ class CustomCalendarLayout @JvmOverloads constructor(
     private val recyclerView: RecyclerView
     private var selectedMonth: Int = 0
     private var selectedYear: Int = 0
-    private var events: List<Event> = listOf()
+    private var events: List<Any> = listOf()
     private var firstDayOfWeekSun: Boolean = true
-    private var selectedDay: CustomCalendarDay? = null
+    private var selectedDay: CustomCalendarDayWithEvents? = null
     private var selectedDayColor: ColorStateList
     private lateinit var todayBackgroundColor: ColorStateList
 
@@ -49,61 +50,31 @@ class CustomCalendarLayout @JvmOverloads constructor(
 
 
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.CustomCalendarLayout)
-        val headerBackgroundColor = typedArray.getColor(
-            R.styleable.CustomCalendarLayout_headerBackgroundColor,
-            ContextCompat.getColor(context, android.R.color.transparent)
-        )
-        val headerTextColor = typedArray.getColor(
-            R.styleable.CustomCalendarLayout_headerTextColor,
-            ContextCompat.getColor(context, android.R.color.transparent)
-        )
 
-        val calendarBackgroundColor = typedArray.getColor(
-            R.styleable.CustomCalendarLayout_calendarBackgroundColor,
-            ContextCompat.getColor(context, android.R.color.transparent)
-        )
+        val headerBackgroundColor = getStyledColor(typedArray, R.styleable.CustomCalendarLayout_headerBackgroundColor, android.R.color.transparent)
+        val headerTextColor = getStyledColor(typedArray, R.styleable.CustomCalendarLayout_headerTextColor, android.R.color.transparent)
+        val calendarBackgroundColor = getStyledColor(typedArray, R.styleable.CustomCalendarLayout_calendarBackgroundColor, android.R.color.transparent)
+        val selectedDayTextColor = getStyledColor(typedArray, R.styleable.CustomCalendarLayout_selectedDayTextColor, android.R.color.transparent)
+        val currentDayTextColor = getStyledColor(typedArray, R.styleable.CustomCalendarLayout_currentDayBackgroundColor, android.R.color.transparent)
 
-        val selectedDayTextColor = typedArray.getColor(
-            R.styleable.CustomCalendarLayout_selectedDayTextColor,
-            ContextCompat.getColor(context, android.R.color.transparent)
-        )
-
-        val currentDayTextColor = typedArray.getColor(
-            R.styleable.CustomCalendarLayout_currentDayBackgroundColor,
-            ContextCompat.getColor(context, android.R.color.transparent)
-        )
-
-        val firstWeekDaySun = typedArray.getBoolean(
-            R.styleable.CustomCalendarLayout_firstWeekDaySun,
-            false
-        )
+        val firstWeekDaySun = typedArray.getBoolean(R.styleable.CustomCalendarLayout_firstWeekDaySun, false)
 
         typedArray.recycle()
 
-        binding.header.setBackgroundColor(headerBackgroundColor)
-        binding.monthTextView.setTextColor(headerTextColor)
-        binding.monthNavigationNext.setTextColor(headerTextColor)
-        binding.monthNavigationPrevious.setTextColor(headerTextColor)
-        binding.calendarWrapper.setBackgroundColor(calendarBackgroundColor)
-        val iconTint = ColorStateList.valueOf(headerTextColor)
-        binding.monthNavigationNext.iconTint = iconTint
-        binding.monthNavigationPrevious.iconTint = iconTint
-        selectedDayColor = ColorStateList.valueOf(selectedDayTextColor)
-        todayBackgroundColor = ColorStateList.valueOf(currentDayTextColor)
-
-
-
-
-        if (firstWeekDaySun) {
-            firstDayOfWeekSun = true
-            binding.weekdaysSunFirst.visibility = View.VISIBLE
-            binding.weekdaysMonFirst.visibility = View.GONE
-        } else {
-            firstDayOfWeekSun = false
-            binding.weekdaysSunFirst.visibility = View.GONE
-            binding.weekdaysMonFirst.visibility = View.VISIBLE
+        with(binding) {
+            header.setBackgroundColor(headerBackgroundColor)
+            monthTextView.setTextColor(headerTextColor)
+            monthNavigationNext.setTextColor(headerTextColor)
+            monthNavigationPrevious.setTextColor(headerTextColor)
+            calendarWrapper.setBackgroundColor(calendarBackgroundColor)
+            val iconTint = ColorStateList.valueOf(headerTextColor)
+            monthNavigationNext.iconTint = iconTint
+            monthNavigationPrevious.iconTint = iconTint
+            selectedDayColor = ColorStateList.valueOf(selectedDayTextColor)
+            todayBackgroundColor = ColorStateList.valueOf(currentDayTextColor)
         }
 
+        configureWeekdaysView(firstWeekDaySun)
 
         recyclerView = binding.calendarRV
         val layoutManager = GridLayoutManager(context, 7)
@@ -116,8 +87,26 @@ class CustomCalendarLayout @JvmOverloads constructor(
         initListeners()
     }
 
-    fun setEvents(newEvents: List<Event>) {
-        events = newEvents
+    private fun configureWeekdaysView(firstWeekDaySun: Boolean) {
+        with(binding) {
+            if (firstWeekDaySun) {
+                firstDayOfWeekSun = true
+                weekdaysSunFirst.visibility = View.VISIBLE
+                weekdaysMonFirst.visibility = View.GONE
+            } else {
+                firstDayOfWeekSun = false
+                weekdaysSunFirst.visibility = View.GONE
+                weekdaysMonFirst.visibility = View.VISIBLE
+            }
+        }
+    }
+
+
+    private fun getStyledColor(typedArray: TypedArray, index: Int, defaultColor: Int): Int {
+        return typedArray.getColor(index, ContextCompat.getColor(context, defaultColor))
+    }
+    fun setEvents(daysWithEvents: List<CustomCalendarDayWithEvents>) {
+        daysWithEvents = daysWithEvents
         adapter?.let {
             updateEvents()
         }
@@ -204,7 +193,7 @@ class CustomCalendarLayout @JvmOverloads constructor(
 
     private fun generateDaysOfMonthList(
         selectedMonth: LocalDate,
-    ): List<CustomCalendarDay> {
+    ): List<CustomCalendarDayWithEvents> {
 
         val emptySpacesForDaysList = when (selectedMonth.dayOfWeek) {
             DayOfWeek.MONDAY -> if (firstDayOfWeekSun) 1 else 0
@@ -217,9 +206,9 @@ class CustomCalendarLayout @JvmOverloads constructor(
             else -> 0
         }
 
-        val emptySpaces = List(emptySpacesForDaysList) { CustomCalendarDay() }
+        val emptySpaces = List(emptySpacesForDaysList) { CustomCalendarDayWithEvents() }
         val daysOfMonth = (1..selectedMonth.lengthOfMonth()).map { day ->
-            CustomCalendarDay(
+            CustomCalendarDayWithEvents(
                 day = day,
                 month = selectedMonth.monthValue,
                 year = selectedMonth.year,
@@ -231,7 +220,7 @@ class CustomCalendarLayout @JvmOverloads constructor(
     }
 
     inner class CustomCalendarAdapter(
-        private var days: List<CustomCalendarDay>,
+        private var days: List<CustomCalendarDayWithEvents>,
     ) : RecyclerView.Adapter<CustomCalendarAdapter.CalendarViewHolder>() {
 
 
@@ -272,12 +261,12 @@ class CustomCalendarLayout @JvmOverloads constructor(
 
         }
 
-        fun updateDaysOfTheMont(listOfDays: List<CustomCalendarDay>) {
+        fun updateDaysOfTheMont(listOfDays: List<CustomCalendarDayWithEvents>) {
             days = listOfDays
             notifyDataSetChanged()
         }
 
-        private fun setBackgroundForToday(day: CustomCalendarDay, holder: CalendarViewHolder) {
+        private fun setBackgroundForToday(day: CustomCalendarDayWithEvents, holder: CalendarViewHolder) {
             if (day.day > 0 && day.month > 0 && day.year > 0) {
                 val currentDate = LocalDate.now()
                 val todayDate = LocalDate.of(day.year, day.month, day.day)
@@ -297,7 +286,7 @@ class CustomCalendarLayout @JvmOverloads constructor(
 
 
     interface CalendarClickListener {
-        fun onDayClick(customCalendarDay: CustomCalendarDay)
+        fun onDayClick(customCalendarDayWithEvents: CustomCalendarDayWithEvents)
         fun onPreviousMonthClick(previousYear: Int, previousMonth: Int)
         fun onNextMonthClick(nextYear: Int, nextMonth: Int)
         fun onCurrentMonthClick(currentYear: Int, currentMonth: Int)

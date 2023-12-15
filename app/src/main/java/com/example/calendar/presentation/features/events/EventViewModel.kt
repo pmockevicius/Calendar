@@ -37,5 +37,4 @@ class EventViewModel @Inject constructor(private val usecase: EventUsecaseInterf
     }
 
 
-
 }

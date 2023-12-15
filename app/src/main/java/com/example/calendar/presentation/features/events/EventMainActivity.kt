@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.calendar.R
 import com.example.calendar.databinding.ActivityMainBinding
 import com.example.calendar.domain.entity.Event
-import com.example.circularimageview.components.CustomCalendarDay
+import com.example.circularimageview.components.CustomCalendarDayWithEvents
 import com.example.circularimageview.components.CustomCalendarLayout
 import com.example.rickmorty.presentation.features.details.EventAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -85,11 +85,11 @@ class EventMainActivity : AppCompatActivity() {
 
         customCalendarLayout.setOnCalendarClickListener(object :
             CustomCalendarLayout.CalendarClickListener {
-            override fun onDayClick(customCalendarDay: CustomCalendarDay) {
+            override fun onDayClick(customCalendarDayWithEvents: CustomCalendarDayWithEvents) {
 
-                setEventDayText(customCalendarDay.year, customCalendarDay.month, customCalendarDay.day)
+                setEventDayText(customCalendarDayWithEvents.year, customCalendarDayWithEvents.month, customCalendarDayWithEvents.day)
 
-               eventAdapter.updateEvents(customCalendarDay.events)
+                eventAdapter.updateEvents(customCalendarDayWithEvents.events as List<Event>)
             }
 
             override fun onPreviousMonthClick(previousYear: Int, previousMonth: Int) {
