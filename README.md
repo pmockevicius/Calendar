@@ -20,9 +20,9 @@ Custom Calendar View is a customizable calendar component for displaying and int
     - nextMonthiconDrawable: set darawale for "navigate to next month" button. By default "->"
 
 
-- Event Integration: Display days associated with events:
+- Event Integration: Highlight the days associated with events:
 
-    To display events in the calendar call setEvents method  from customCalendarLayout and pass list of days containing events in below format: 
+    To display events in the calendar call setEvents method  from customCalendarLayout component and pass a list of days containing events in below format: 
 
  CustomCalendarDay(
 
@@ -73,6 +73,17 @@ Once events are provided calendar will add red dot to the days that are associat
     - By pressing on previous or next month icons at the top of the calendar you can navigate between months. If Text indicating selected month and year is pressed, calendar will return to current year and month.
 
 
+
+
+
+
+## Usage
+
+To be added
+
+
+## Developed by Paulius Mockevicius 
+https://github.com/pmockevicius
 
 
 
