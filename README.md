@@ -24,13 +24,12 @@ Custom Calendar View is a customizable calendar component for displaying and int
 
     To display events in the calendar call setEvents    method  from customCalendarLayout component and pass a list of days containing events in below format: 
 
-    CustomCalendarDay(
-
+        CustomCalendarDay(
         val day: Int,
         val month: Int,
         val year: Int,
         val events: List<Any>
-    )
+        )
 
     customCalendarLayout.setEvents(list<CustomCalendarDay>)
 
