@@ -12,18 +12,29 @@
 
 
 
+<!--    <com.example.circularimageview.components.CustomCalendarLayout-->
+<!--        android:id="@+id/myCalendar"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:headerBackgroundColor="@color/blue"-->
+<!--        app:headerTextColor="#528A2A"-->
+<!--        app:calendarBackgroundColor="#D2AEE6"-->
+<!--        app:firstWeekDaySun="true"-->
+<!--        app:selectedDayTextColor="#FF5722"-->
+<!--        app:currentDayBackgroundColor="#8F6D31"-->
+<!--        app:previousMonthiconDrawable="@drawable/ic_arrow_left"-->
+<!--        app:nextMonthiconDrawable="@drawable/ic_arrow_right"-->
+<!--        >-->
+<!--    </com.example.circularimageview.components.CustomCalendarLayout>-->
+
+
     <com.example.circularimageview.components.CustomCalendarLayout
         android:id="@+id/myCalendar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:headerBackgroundColor="@color/blue"
-        app:headerTextColor="#40B027"
-        app:calendarBackgroundColor="#D2AEE6"
-        app:firstWeekDaySun="true"
-        app:selectedDayTextColor="#FF5722"
-        app:currentDayBackgroundColor="#5D8F31"
+            app:previousMonthiconDrawable="@drawable/ic_arrow_left"
+            app:nextMonthiconDrawable="@drawable/ic_arrow_right"
         >
-
     </com.example.circularimageview.components.CustomCalendarLayout>
 
     <TextView

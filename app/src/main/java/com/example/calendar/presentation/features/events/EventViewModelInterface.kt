@@ -7,6 +7,5 @@ interface EventViewModelInterface {
 
     val uiState: StateFlow<UIState>
     fun addEvent(event: Event)
-
     fun getEvents()
 }

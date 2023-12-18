@@ -22,7 +22,6 @@
             app:iconGravity="start"
             app:iconSize="26dp"
             android:textColor="@color/black"
-            app:icon="@drawable/ic_arrow_left"
             android:backgroundTint="@android:color/transparent"/>
 
         <TextView
@@ -40,7 +39,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-           app:icon="@drawable/ic_arrow_right"
             app:iconGravity="end"
             app:iconSize="26dp"
             android:textColor="@color/black"

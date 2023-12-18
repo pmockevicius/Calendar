@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.calendar.R
 import com.example.calendar.databinding.ActivityMainBinding
 import com.example.calendar.domain.entity.Event
-import com.example.circularimageview.components.CustomCalendarDayWithEvents
+import com.example.circularimageview.components.CustomCalendarDay
 import com.example.circularimageview.components.CustomCalendarLayout
 import com.example.rickmorty.presentation.features.details.EventAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-
 
 @AndroidEntryPoint
 class EventMainActivity : AppCompatActivity() {
@@ -75,7 +74,7 @@ class EventMainActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.map { it.events }
+                viewModel.uiState.map { it.customCalendarEventDays }
                     .distinctUntilChanged().collect {
                         customCalendarLayout.setEvents(it)
                     }
@@ -84,12 +83,12 @@ class EventMainActivity : AppCompatActivity() {
 
 
         customCalendarLayout.setOnCalendarClickListener(object :
-            CustomCalendarLayout.CalendarClickListener {
-            override fun onDayClick(customCalendarDayWithEvents: CustomCalendarDayWithEvents) {
+            CustomCalendarLayout.CalendarClickListenerInterface {
+            override fun onDayClick(customCalendarDay: CustomCalendarDay) {
 
-                setEventDayText(customCalendarDayWithEvents.year, customCalendarDayWithEvents.month, customCalendarDayWithEvents.day)
+                setEventDayText(customCalendarDay.year, customCalendarDay.month, customCalendarDay.day)
 
-                eventAdapter.updateEvents(customCalendarDayWithEvents.events as List<Event>)
+                eventAdapter.updateEvents(customCalendarDay.events as List<Event>)
             }
 
             override fun onPreviousMonthClick(previousYear: Int, previousMonth: Int) {

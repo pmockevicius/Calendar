@@ -9,12 +9,8 @@ import com.example.calendar.domain.repository.event.EventRepositoryInterface
 import javax.inject.Inject
 
 class EventRepository @Inject constructor(private val localEventDS: EventLocalDatasourceInterface): EventRepositoryInterface {
-    override fun addEvent(event: Event) {
+    override suspend fun addEvent(event: Event) {
         localEventDS.addEvent(event.toDBO())
-    }
-
-    override suspend fun getEventsFor(year: Int, month: Int, day: Int?): List<Event>{
-        return localEventDS.getEventsFor(year, month, day).map { it.toEntity() }
     }
 
     override suspend fun getEvents(): List<Event>{

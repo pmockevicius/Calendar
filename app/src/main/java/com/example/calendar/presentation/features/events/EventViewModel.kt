@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.calendar.domain.entity.Event
 import com.example.calendar.domain.usecase.calendar.EventUsecaseInterface
+import com.example.circularimageview.components.CustomCalendarDay
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 data class UIState(
-    val events: List<Event> = listOf()
+    val customCalendarEventDays: List<CustomCalendarDay> = listOf()
 )
 
 @HiltViewModel
@@ -29,12 +30,20 @@ class EventViewModel @Inject constructor(private val usecase: EventUsecaseInterf
         }
     }
 
-    override fun getEvents(){
+    override fun getEvents() {
         viewModelScope.launch(Dispatchers.IO) {
-            val events = usecase.getEvents()
-            _uiState.update { it.copy(events = events) }
+            val customCalendarDaysWithEvents = usecase.getEvents().map { event ->
+                CustomCalendarDay(
+                    day = event.eventDay,
+                    month = event.eventMonth,
+                    year = event.eventYear,
+                    events = listOf(event)
+                )
+            }
+            _uiState.update { it.copy(customCalendarEventDays = customCalendarDaysWithEvents) }
         }
     }
+
 
 
 }
