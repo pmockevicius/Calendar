@@ -50,7 +50,7 @@ Custom Calendar View is a customizable calendar component for displaying and int
         })
 
 
-    - The * *onDayClick* * listener provides selected day in  CustomCalendarDay format that holds events associatedwith that day. To receive and use events in your application cast received events to your event Entity. 
+    - The * *onDayClick* * listener provides selected day in  CustomCalendarDay format that holds events associatedwith that day. To use events in your application cast received events to your event Entity. 
 
     override fun onDayClick(customCalendarDay: CustomCalendarDay) {
 
