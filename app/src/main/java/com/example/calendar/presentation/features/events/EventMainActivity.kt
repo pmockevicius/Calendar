@@ -25,7 +25,7 @@ class EventMainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var customCalendarLayout: CustomCalendarLayout
-    private lateinit var viewModel: EventViewModel
+    private lateinit var viewModel: EventViewModelInterface
     private lateinit var eventAdapter: EventAdapter
 
 
