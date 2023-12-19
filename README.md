@@ -9,14 +9,22 @@ Custom Calendar View is a customizable calendar component for displaying and int
 
 - **Customizable Appearance:** Easily change the appearance of the calendar by adjusting colors, and other visual elements.
     
-    Customize Calendar appearance by applying these custom attributes: 
-    - **firstWeekDaySun:** Boolean to specify whether the first day of the week is Sunday (true) or Monday (false).By default false
-    - **headerBackgroundColor:** Background color of the calendar header.By default holo_blue_dark ##0099CC
-    - **headerTextColor:** Text color of the calendar header and previous and next month icons. By default white #FFFFFF
-    - **calendarBackgroundColor:** Background color of the calendar grid.By default tertiary #DEBCDF
-    - **selectedDayTextColor:** Text color of the selected day.By default red #FF4444
-    - **currentDayBackgroundColor:** Background color of the current day. By default dark grey #AAAAAA
-    - **previousMonthiconDrawable:** set darawale for "navigate to previous month button. By default "<-"
+    Customize Calendar appearance by applying these custom attributes:
+
+    - **firstWeekDaySun:**
+      Boolean to specify whether the first day of the week is Sunday (true) or Monday (false).By default false
+    - **headerBackgroundColor:**
+      Background color of the calendar header.By default holo_blue_dark ##0099CC
+    - **headerTextColor:**
+      Text color of the calendar header and previous and next month icons. By default white #FFFFFF
+    - **calendarBackgroundColor:**
+      Background color of the calendar grid.By default tertiary #DEBCDF
+    - **selectedDayTextColor:**
+      Text color of the selected day.By default red #FF4444
+    - **currentDayBackgroundColor:**
+      Background color of the current day. By default dark grey #AAAAAA
+    - **previousMonthiconDrawable:**
+      set darawale for "navigate to previous month button. By default "<-"
     - **nextMonthiconDrawable:** set darawale for "navigate to next month" button. By default "->"
 
 
